@@ -5,6 +5,7 @@ import axios from "axios";
 import { Link, useParams } from "react-router-dom"; // <== IMPORT 
 import AddTask from "../components/AddTask";   //  <== IMPORT
 import TaskCard from "../components/TaskCard"; //  <== IMPORT
+import projectsService from "../services/projects.service";
 
 const API_URL = "http://localhost:5005";        // <== ADD
 
@@ -17,9 +18,19 @@ const { projectId } = useParams();
 
  // Helper function that makes a GET request to the API
   // and retrieves the project by id
-  const getProject = () => {          //  <== ADD A NEW FUNCTION
-    axios
-      .get(`${API_URL}/api/projects/${projectId}`)
+  const getProject = () => {
+    // Get the token from the localStorage
+    const storedToken = localStorage.getItem("authToken");
+   
+    // Send the token through the request "Authorization" Headers
+    // axios
+    //   .get(
+    //     `${API_URL}/api/projects/${projectId}`,
+    //     { headers: { Authorization: `Bearer ${storedToken}` } }
+    //   )
+
+    projectsService.getProject(projectId)
+    
       .then((response) => {
         const oneProject = response.data;
         setProject(oneProject);

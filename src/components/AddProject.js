@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import axios from "axios";
+import projectsService from "../services/projects.service";
 
 const API_URL = "http://localhost:5005";
 
@@ -13,15 +14,22 @@ function AddProject(props) {
     e.preventDefault();
  
     const requestBody = { title, description };
-    axios
-      .post(`${API_URL}/api/projects`, requestBody)
-      .then((response) => {
-        // Reset the state
-        setTitle("");
-        setDescription("");
-      })
-      .catch((error) => console.log(error));
-  };
+    
+// Get the token from the localStorage
+const storedToken = localStorage.getItem('authToken');
+ 
+// Send the token through the request "Authorization" Headers
+                                           ////////////////////////////////
+ projectsService.createProject(requestBody)//// !!!WE GUESSED THIS!!! organizing HTTP requests 
+                                           ////////////////////////////////
+  .then((response) => {
+  // Reset the state
+  setTitle("");
+  setDescription("");
+  props.refreshProjects();
+})
+  .catch((error) => console.log(error));
+};
 
 
   return (

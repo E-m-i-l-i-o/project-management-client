@@ -5,6 +5,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import ProjectCard from "../components/ProjectCard"; //  <==  IMPORT
 import AddProject from "../components/AddProject";
+import projectsService from "../services/projects.service";
 
 
 const API_URL = "http://localhost:5005";
@@ -14,8 +15,17 @@ function ProjectListPage() {
   const [projects, setProjects] = useState([]);
 
   const getAllProjects = () => {
-    axios
-      .get(`${API_URL}/api/projects`)
+    // Get the token from the localStorage
+    const storedToken = localStorage.getItem("authToken");
+   
+    // Send the token through the request "Authorization" Headers
+    // axios
+    //   .get(
+    //   `${API_URL}/api/projects`,
+    // //   { headers: { Authorization: `Bearer ${storedToken}` } }
+    // )
+      projectsService.getAllProjects()
+
       .then((response) => setProjects(response.data))
       .catch((error) => console.log(error));
   };
